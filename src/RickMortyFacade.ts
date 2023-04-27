@@ -23,7 +23,7 @@ export class RickMortyFacade implements Dependency {
     return this.isLastRequestSuccessful;
   }
 
-  public async getCharacters(): Promise<Character[]> {
+  public async getAvailableCharactersFromRickAndMortyPage(): Promise<Character[]> {
     const response = await this.httpClient.get('/character');
 
     if (response.status !== 200) {

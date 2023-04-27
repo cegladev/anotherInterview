@@ -14,12 +14,12 @@ export class Routes {
     });
 
     router.get('/characters', async (req, res) => {
-      const characters = await this.rickMorty.wczytajWszystkie();
+      const characters = await this.rickMorty.LoadAllAvailableCharactersOfRickAndMortyWebPageFromFacade();
       res.status(200).json({ characters: characters });
     });
 
     router.get('/characters/:id', async (req, res) => {
-      const character = await this.rickMorty.wczytajPostać(parseInt(req.params.id));
+      const character = await this.rickMorty.LoadCharacterFromPersonIdNumber(parseInt(req.params.id));
       res.status(200).json({ character: character });
     });
   }

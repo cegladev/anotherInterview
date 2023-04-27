@@ -11,32 +11,47 @@ export class RickMorty {
     this.charactersCollection = this.db.getCollection('characters');
   }
 
-  public async wczytajPostać(id: number): Promise<Character> {
-    const character = await this.rickMortyFacade.getCharacter(id);
+  public async LoadCharacterFromPersonIdNumber(idNumber: number): Promise<Character> {
+    const characters = await this.rickMortyFacade.getAvailableCharactersFromRickAndMortyPage();
+    let character : any;
 
-    const nieIstnial = await this.zapiszJezeliNieIstneje(character);
-
-    if (nieIstnial) {
-      console.log('Zapisano nową postać');
+    for(let i = 0; i<characters.length; i++) {
+      if(characters.at(i).id === idNumber) {
+        character = characters.at(i)
+      }
     }
 
+    if(character !== null) {
+      const nieIstnial = await this.FindCharacterAndSaveIfDoesntExist(character);
+
+      if (nieIstnial) {
+        console.log('Zapisano nową postać');
+     }
+    }
+    
     return character;
   }
 
-  public async zapiszJezeliNieIstneje(character: Character): Promise<boolean> {
-    const result = await this.charactersCollection.updateOne(
-      { id: character.id },
-      { $setOnInsert: character },
-      { upsert: true }
-    );
+  public async FindCharacterAndSaveIfDoesntExist(character: Character): Promise<boolean> {
 
-    console.log(result);
+    const doeasExists = this.charactersCollection.find({ id: character.id });
 
-    return result.upsertedCount === 1;
+    if(doeasExists !== null) {
+      const result = await this.charactersCollection.updateOne(
+        { id: character.id },
+        { $setOnInsert: character },
+        { upsert: true }
+      );
+    
+      console.log(result);
+    
+    }
+
+    return doeasExists !== null;
   }
 
-  public async wczytajWszystkie(): Promise<any> {
-    const characters = await this.rickMortyFacade.getCharacters();
+  public async LoadAllAvailableCharactersOfRickAndMortyWebPageFromFacade(): Promise<any> {
+    const characters = await this.rickMortyFacade.getAvailableCharactersFromRickAndMortyPage();
 
     return characters;
   }
