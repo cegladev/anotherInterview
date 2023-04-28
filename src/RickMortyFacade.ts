@@ -30,7 +30,7 @@ export class RickMortyFacade implements Dependency {
       this.isLastRequestSuccessful = false;
     }
 
-    return response.data;
+    return response.data.results;
   }
 
   public async getCharacter(id: number): Promise<Character> {
