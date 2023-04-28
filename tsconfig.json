@@ -16,9 +16,9 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "target": "esnext",
-    "types": ["node"],
+    "types": ["node", "jest"],
     "incremental": true
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "declarations.d.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["**/*.spec.ts", "tests", "node_modules"]
 }
